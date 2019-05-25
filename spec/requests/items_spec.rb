@@ -3,7 +3,7 @@ require 'rails_helper'
 
 RSpec.describe 'Items API' do
   let!(:todo) { create(:todo) }
-  let!(:items) { create_list(:item, 20, todo_id: todo_id) }
+  let!(:items) { create_list(:item, 20, todo_id: todo.id) }
   let(:todo_id) { todo.id }
   let(:id) { items.first.id }
 
@@ -95,7 +95,7 @@ RSpec.describe 'Items API' do
 
       it 'updates the item' do
         updated_item = Item.find(id)
-        expected(updated_item.name).to match(/Mozart/)
+        expect(updated_item.name).to match(/Mozart/)
       end
     end
 
@@ -103,24 +103,20 @@ RSpec.describe 'Items API' do
       let(:id) { 0 }
 
       it 'returns status code 404' do
-        let(:id) { 0 }
+        expect(response).to have_http_status(404)
+      end
 
-        it 'returns status code 404' do
-          expect(response).to have_http_status(404)
-        end
-
-        it 'returns a not found message' do
-          expect(response.body).to match (/Couldn't find Item/)
-        end
+      it 'returns a not found message' do
+        expect(response.body).to match (/Couldn't find Item/)
       end
     end
+  end
 
-    describe 'DELETE /todos/:id' do
-      before { delete "/todos/#{todo_id}/items/#{id}" }
+  describe 'DELETE /todos/:id' do
+    before { delete "/todos/#{todo_id}/items/#{id}" }
 
-      it 'returns status code 204' do
-        expect(response).to have_http_status(204)
-      end
+    it 'returns status code 204' do
+      expect(response).to have_http_status(204)
     end
   end
 end
