@@ -83,7 +83,7 @@ RSpec.describe 'Todos API', type: :request do
     let(:valid_attributes) {{ title: 'Shopping'}}
 
     context 'when the record exists' do 
-      before { put "/todos/${todo_id}", params: valid_attributes}
+      before { put "/todos/#{todo_id}", params: valid_attributes}
 
       it 'updates the record' do
         expect(response.body).to be_empty
